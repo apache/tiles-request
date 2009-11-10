@@ -19,26 +19,23 @@
  * under the License.
  */
 
-package org.apache.tiles.portlet.context;
-
-import org.apache.tiles.request.NotAvailableFeatureException;
-
+package org.apache.tiles.request;
 
 /**
- * Exception that indicates that a resource could not be used because it is not
- * in a portlet environment.
+ * Exception that indicates that a feature could not be used since it is not
+ * available.
  *
  * @version $Rev$ $Date$
  * @since 2.1.4
  */
-public class NotAPortletEnvironmentException extends NotAvailableFeatureException {
+public class NotAvailableFeatureException extends RuntimeException {
 
     /**
      * Constructor.
      *
      * @since 2.1.4
      */
-    public NotAPortletEnvironmentException() {
+    public NotAvailableFeatureException() {
     }
 
     /**
@@ -47,7 +44,7 @@ public class NotAPortletEnvironmentException extends NotAvailableFeatureExceptio
      * @param message The detail message.
      * @since 2.1.4
      */
-    public NotAPortletEnvironmentException(String message) {
+    public NotAvailableFeatureException(String message) {
         super(message);
     }
 
@@ -57,7 +54,7 @@ public class NotAPortletEnvironmentException extends NotAvailableFeatureExceptio
      * @param e The cause to be wrapped.
      * @since 2.1.4
      */
-    public NotAPortletEnvironmentException(Throwable e) {
+    public NotAvailableFeatureException(Throwable e) {
         super(e);
     }
 
@@ -68,7 +65,7 @@ public class NotAPortletEnvironmentException extends NotAvailableFeatureExceptio
      * @param e The cause to be wrapped.
      * @since 2.1.4
      */
-    public NotAPortletEnvironmentException(String message, Throwable e) {
+    public NotAvailableFeatureException(String message, Throwable e) {
         super(message, e);
     }
 }
