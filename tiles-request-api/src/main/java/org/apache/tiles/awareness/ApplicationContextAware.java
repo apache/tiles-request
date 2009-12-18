@@ -18,43 +18,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.tiles.awareness;
 
-package org.apache.tiles.request.servlet;
-
-import java.io.PrintWriter;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
+import org.apache.tiles.request.ApplicationContext;
 
 /**
- * Wraps an HTTP response and overrides its print writer.
+ * It represents an object that can have a reference to the
+ * {@link ApplicationContext}.
  *
  * @version $Rev$ $Date$
- * @since 2.2.0
+ * @since 2.1.0
  */
-public class ExternalWriterHttpServletResponse extends
-        HttpServletResponseWrapper {
+public interface ApplicationContextAware {
 
     /**
-     * The print writer to use, instead of the response's one.
-     */
-    private PrintWriter writer;
-
-    /**
-     * Constructor.
+     * Sets the Tiles application context.
      *
-     * @param response The response to wrap.
-     * @param writer The print writer to use, instead of the response's one.
-     * @since 2.2.0
+     * @param applicationContext The Tiles application context.
+     * @since 2.1.0
      */
-    public ExternalWriterHttpServletResponse(HttpServletResponse response, PrintWriter writer) {
-        super(response);
-        this.writer = writer;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PrintWriter getWriter() {
-        return writer;
-    }
+    void setApplicationContext(ApplicationContext applicationContext);
 }
