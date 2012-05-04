@@ -55,6 +55,7 @@ under the License.
         <module>tiles-request-freemarker</module>
         <module>tiles-request-velocity</module>
         <module>tiles-request-mustache</module>
+        <module>assembly</module>
     </modules>
     <distributionManagement>
         <site>
