@@ -105,9 +105,9 @@
                       <fileset dir="${settings.localRepository}/org/apache/tiles/${project.artifactId}/${project.version}">
                         <include name="${project.artifactId}-${project.version}-*.zip*" />
                         <include name="${project.artifactId}-${project.version}-*.tar.gz*" />
-                        <exclude name="${project.artifactId}-${project.version}-source-release.*"/>
+                        <exclude name="${project.artifactId}-${project.version}-source-release.*" />
                       </fileset>
-                      <mapper type="glob" from="${project.artifactId}-*" to="tiles-request-*"/>
+                      <mapper type="glob" from="${project.artifactId}-*" to="tiles-request-*" />
                     </copy>
                   </tasks>
                 </configuration>
