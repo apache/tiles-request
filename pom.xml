@@ -163,7 +163,7 @@ under the License.
             <dependency>
                 <groupId>org.apache.tiles</groupId>
                 <artifactId>tiles-autotag-core-runtime</artifactId>
-                <version>${project.version}</version>
+                <version>1.0.0</version>
                 <optional>true</optional>
             </dependency>
             <dependency>
