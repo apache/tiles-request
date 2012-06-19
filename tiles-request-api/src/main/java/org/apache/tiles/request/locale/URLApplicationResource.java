@@ -46,7 +46,7 @@ public class URLApplicationResource extends PostfixedApplicationResource {
 
     /**
      * Creates a URLApplicationResource for the specified path that can be accessed through the specified URL.
-     * 
+     *
      * @param localePath the path including localization.
      * @param url the URL where the contents can be found.
      */
@@ -60,16 +60,16 @@ public class URLApplicationResource extends PostfixedApplicationResource {
 
     /**
      * Creates a URLApplicationResource for the specified path that can be accessed through the specified URL.
-     * 
+     *
      * @param path the path excluding localization.
      * @param locale the Locale.
      * @param url the URL where the contents can be found.
      */
     public URLApplicationResource(String path, Locale locale, URL url) throws MalformedURLException {
         super(path, locale);
-        this.url = new URL(url, getLocalePath());
+        this.url = url;
         if ("file".equals(url.getProtocol())) {
-            file = new File(this.url.getPath());
+            file = new File(url.getPath());
         }
     }
 
@@ -103,5 +103,13 @@ public class URLApplicationResource extends PostfixedApplicationResource {
     @Override
     public String toString() {
         return "Resource " + getLocalePath() + " at " + url.toString();
+    }
+
+    protected URL getURL(){
+        return url;
+    }
+
+    protected File getFile(){
+        return file;
     }
 }
