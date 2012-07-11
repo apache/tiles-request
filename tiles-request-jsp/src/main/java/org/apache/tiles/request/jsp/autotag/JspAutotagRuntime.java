@@ -31,7 +31,7 @@ import org.apache.tiles.request.jsp.JspRequest;
 /**
  * A Runtime for implementing JSP tag libraries.
  */
-public class JspAutotagRuntime extends SimpleTagSupport implements AutotagRuntime {
+public class JspAutotagRuntime extends SimpleTagSupport implements AutotagRuntime<Request> {
     /** {@inheritDoc} */
     @Override
     public void doTag() {
@@ -55,7 +55,7 @@ public class JspAutotagRuntime extends SimpleTagSupport implements AutotagRuntim
 
     /** {@inheritDoc} */
     @Override
-    public Object getParameter(String name, Object defaultValue) {
+    public <T> T getParameter(String name, Class<T> type, T defaultValue) {
         throw new UnsupportedOperationException("the parameters are injected into the tag itself, no need to fetch them");
     }
 }

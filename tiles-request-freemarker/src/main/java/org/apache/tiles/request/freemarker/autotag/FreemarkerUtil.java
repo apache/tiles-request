@@ -46,11 +46,12 @@ public final class FreemarkerUtil {
      * model, or null if not specified.
      * @return The unwrapped object.
      */
-    public static Object getAsObject(TemplateModel model, Object defaultValue) {
+    public static <T> T getAsObject(TemplateModel model, Class<T> type, T defaultValue) {
         try {
-            Object retValue = defaultValue;
+            T retValue = defaultValue;
             if (model != null) {
-                Object value = DeepUnwrap.unwrap(model);
+                @SuppressWarnings("unchecked")
+                T value = (T) DeepUnwrap.unwrap(model);
                 if (value != null) {
                     retValue = value;
                 }
