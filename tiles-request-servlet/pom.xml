@@ -24,11 +24,11 @@ under the License.
   <parent>
     <artifactId>tiles-request</artifactId>
     <groupId>org.apache.tiles</groupId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
   </parent>
   <groupId>org.apache.tiles</groupId>
   <artifactId>tiles-request-servlet</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.1</version>
   <name>Tiles request - Servlet support</name>
   <description>Tiles request implementation for Servlet technology.</description>
   <dependencies>
