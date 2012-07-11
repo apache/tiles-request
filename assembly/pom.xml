@@ -52,6 +52,13 @@
         </configuration>
       </plugin>
     </plugins>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh</artifactId>
+        <version>1.0</version>
+      </extension>
+    </extensions>
   </build>
   <profiles>
     <profile>
@@ -129,7 +136,7 @@
                   <includes>**</includes>
                   <toDir>${project.version}</toDir>
                   <serverId>tiles.build</serverId>
-                  <url>scp://people.apache.org/www/people.apache.org/builds/tiles</url>
+                  <url>scp://people.apache.org/www/people.apache.org/builds/tiles/request</url>
                 </configuration>
               </execution>
             </executions>

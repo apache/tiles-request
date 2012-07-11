@@ -40,7 +40,7 @@ import org.apache.velocity.tools.view.ViewContext;
 /**
  * A Runtime for implementing Velocity Directives.
  */
-public class VelocityAutotagRuntime extends Directive implements AutotagRuntime {
+public class VelocityAutotagRuntime extends Directive implements AutotagRuntime<Request> {
     private InternalContextAdapter context;
     private Writer                 writer;
     private Node                   node;
@@ -70,12 +70,12 @@ public class VelocityAutotagRuntime extends Directive implements AutotagRuntime 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("unchecked")
-    public Object getParameter(String name, Object defaultValue) {
+    public <T> T getParameter(String name, Class<T> type, T defaultValue) {
         if (params == null) {
             ASTMap astMap = (ASTMap) node.jjtGetChild(0);
             params = (Map<String, Object>) astMap.value(context);
         }
-        Object result = params.get(name);
+        T result = (T) params.get(name);
         if (result == null) {
             result = defaultValue;
         }

@@ -94,7 +94,7 @@ public class JspAutotagRuntimeTest {
         runtime.setJspContext(jspContext);
         runtime.setParent(parent);
         runtime.doTag();
-        runtime.getParameter("test", null);
+        runtime.getParameter("test", Object.class, null);
         verify(jspBody, jspContext, parent);
     }
 }

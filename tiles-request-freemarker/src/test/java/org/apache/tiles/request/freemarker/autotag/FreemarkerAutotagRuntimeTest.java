@@ -147,10 +147,10 @@ public class FreemarkerAutotagRuntimeTest {
         replay(model, params, body);
         FreemarkerAutotagRuntime runtime = new FreemarkerAutotagRuntime();
         runtime.execute(env, params, new TemplateModel[0], body);
-        Object notnullParam = runtime.getParameter("notnullParam", null);
-        Object nullParam = runtime.getParameter("nullParam", null);
-        Object notnullParamDefault = runtime.getParameter("notnullParam", new Integer(24));
-        Object nullParamDefault = runtime.getParameter("nullParam", new Integer(24));
+        Object notnullParam = runtime.getParameter("notnullParam", Object.class, null);
+        Object nullParam = runtime.getParameter("nullParam", Object.class, null);
+        int notnullParamDefault = runtime.getParameter("notnullParam", Integer.class, new Integer(24));
+        int nullParamDefault = runtime.getParameter("nullParam", Integer.class, new Integer(24));
         assertEquals(42, notnullParam);
         assertEquals(null, nullParam);
         assertEquals(42, notnullParamDefault);

@@ -62,7 +62,7 @@ public class FreemarkerUtilTest {
         new Environment(template, rootDataModel, out);
 
         replay(model);
-        assertEquals(new Integer(42), FreemarkerUtil.getAsObject(model, new Integer(1)));
+        assertEquals(new Integer(42), FreemarkerUtil.getAsObject(model, Integer.class, new Integer(1)));
         verify(template, rootDataModel, out, model);
     }
 
@@ -81,7 +81,7 @@ public class FreemarkerUtilTest {
         replay(template, rootDataModel, out);
         new Environment(template, rootDataModel, out);
 
-        assertEquals(new Integer(1), FreemarkerUtil.getAsObject(null, new Integer(1)));
+        assertEquals(new Integer(1), FreemarkerUtil.getAsObject(null, Integer.class, new Integer(1)));
         verify(template, rootDataModel, out);
     }
 
@@ -104,7 +104,7 @@ public class FreemarkerUtilTest {
 
         replay(model);
         try {
-            assertEquals(new Integer(42), FreemarkerUtil.getAsObject(model, new Integer(1)));
+            assertEquals(new Integer(42), FreemarkerUtil.getAsObject(model, Integer.class, new Integer(1)));
         } finally {
             verify(template, rootDataModel, out, model);
         }

@@ -36,7 +36,7 @@ import freemarker.template.TemplateModel;
 /**
  * A Runtime for implementing a Freemarker Template Directive.   
  */
-public class FreemarkerAutotagRuntime implements AutotagRuntime, TemplateDirectiveModel {
+public class FreemarkerAutotagRuntime implements AutotagRuntime<Request>, TemplateDirectiveModel {
 
     private Environment env;
     private TemplateDirectiveBody body;
@@ -65,7 +65,7 @@ public class FreemarkerAutotagRuntime implements AutotagRuntime, TemplateDirecti
     
     /** {@inheritDoc} */
     @Override
-    public Object getParameter(String name, Object defaultValue) {
-        return FreemarkerUtil.getAsObject((TemplateModel)params.get(name), defaultValue);
+    public <T> T getParameter(String name, Class<T> type, T defaultValue) {
+        return FreemarkerUtil.getAsObject((TemplateModel)params.get(name), type, defaultValue);
     }
 }
