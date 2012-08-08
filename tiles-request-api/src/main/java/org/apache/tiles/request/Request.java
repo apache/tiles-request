@@ -38,6 +38,12 @@ import org.apache.tiles.request.attribute.Addable;
  */
 public interface Request {
 
+    /** the name of the (mandatory) "application" scope */
+    static String APPLICATION_SCOPE = "application";
+
+    /** the name of the "request" context */
+    static String REQUEST_SCOPE = "request";
+
     /**
      * Return an immutable Map that maps header names to the first (or only)
      * header value (as a String).
@@ -64,6 +70,9 @@ public interface Request {
 
     /**
      * Returns a context map, given the scope name.
+     * This method always return a map for all the scope names returned by
+     * getAvailableScopes(). That map may be writable, or immutable, depending
+     * on the implementation.
      *
      * @param scope The name of the scope.
      * @return The context.
@@ -71,8 +80,12 @@ public interface Request {
     Map<String, Object> getContext(String scope);
 
     /**
-     * Returns all available scopes, that are the ones returned by
-     * {@link #getNativeScopes()} plus derivative scopes (e.g. flash scope).
+     * Returns all available scopes.
+     * The scopes are ordered according to their lifetime,
+     * the innermost, shorter lived scope appears first,
+     * and the outermost, longer lived scope appears last.
+     * Besides, the scopes "request" and "application" always included
+     * in the list.
      *
      * @return All the available scopes.
      */

@@ -43,7 +43,7 @@ public class AbstractRequestTest {
         AbstractRequest request = createMockBuilder(AbstractRequest.class).createMock();
         Map<String, Object> scope = new HashMap<String, Object>();
 
-        expect(request.getContext("request")).andReturn(scope).anyTimes();
+        expect(request.getContext(Request.REQUEST_SCOPE)).andReturn(scope).anyTimes();
 
         replay(request);
         assertFalse(request.isForceInclude());

@@ -57,7 +57,7 @@ public class ServletRequest extends AbstractClientRequest {
      * The native available scopes: request, session and application.
      */
     private static final List<String> SCOPES
-            = Collections.unmodifiableList(Arrays.asList("request", "session", "application"));
+            = Collections.unmodifiableList(Arrays.asList(REQUEST_SCOPE, "session", APPLICATION_SCOPE));
 
     /**
      * The request object to use.
@@ -184,11 +184,11 @@ public class ServletRequest extends AbstractClientRequest {
 
     @Override
     public Map<String, Object> getContext(String scope) {
-        if("request".equals(scope)){
+        if(REQUEST_SCOPE.equals(scope)){
             return getRequestScope();
         }else if("session".equals(scope)){
             return getSessionScope();
-        }else if("application".equals(scope)){
+        }else if(APPLICATION_SCOPE.equals(scope)){
             return getApplicationScope();
         }
         throw new IllegalArgumentException(scope + " does not exist. Call getAvailableScopes() first to check.");

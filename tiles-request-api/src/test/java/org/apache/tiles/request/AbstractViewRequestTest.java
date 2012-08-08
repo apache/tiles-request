@@ -80,7 +80,7 @@ public class AbstractViewRequestTest {
     public void testDispatch() throws IOException {
         Map<String, Object> requestScope = new HashMap<String, Object>();
 
-        expect(request.getContext("request")).andReturn(requestScope);
+        expect(request.getContext(Request.REQUEST_SCOPE)).andReturn(requestScope);
         wrappedRequest.include("/my/path.html");
 
         replay(wrappedRequest, request, applicationContext);
@@ -97,7 +97,7 @@ public class AbstractViewRequestTest {
     public void testInclude() throws IOException {
         Map<String, Object> requestScope = new HashMap<String, Object>();
 
-        expect(request.getContext("request")).andReturn(requestScope);
+        expect(request.getContext(Request.REQUEST_SCOPE)).andReturn(requestScope);
         wrappedRequest.include("/my/path.html");
 
         replay(wrappedRequest, request, applicationContext);

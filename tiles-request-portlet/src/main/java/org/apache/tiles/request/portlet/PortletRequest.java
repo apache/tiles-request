@@ -59,7 +59,7 @@ public class PortletRequest extends AbstractClientRequest {
      * The native available scopes.
      */
     private static final List<String> SCOPES
-            = Collections.unmodifiableList(Arrays.asList("request", "portletSession", "session", "application"));
+            = Collections.unmodifiableList(Arrays.asList(REQUEST_SCOPE, "portletSession", "session", APPLICATION_SCOPE));
 
     /**
      * <p>The lazily instantiated <code>Map</code> of header name-value
@@ -323,13 +323,13 @@ public class PortletRequest extends AbstractClientRequest {
 
     @Override
     public Map<String, Object> getContext(String scope) {
-        if("request".equals(scope)){
+        if(REQUEST_SCOPE.equals(scope)){
             return getRequestScope();
-        }else if("application".equals(scope)){
-            return getApplicationScope();
+        }else if("session".equals(scope)){
+            return getSessionScope();
         }else if("portletSession".equals(scope)){
             return getPortletSessionScope();
-        }else if("application".equals(scope)){
+        }else if(APPLICATION_SCOPE.equals(scope)){
             return getApplicationScope();
         }
         throw new IllegalArgumentException(scope + " does not exist. Call getAvailableScopes() first to check.");

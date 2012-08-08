@@ -41,7 +41,7 @@ public abstract class AbstractRequest implements DispatchRequest {
      * will be included and never forwarded.
      */
     protected void setForceInclude(boolean forceInclude) {
-        getContext("request").put(FORCE_INCLUDE_ATTRIBUTE_NAME, forceInclude);
+        getContext(REQUEST_SCOPE).put(FORCE_INCLUDE_ATTRIBUTE_NAME, forceInclude);
     }
 
     /**
@@ -51,7 +51,7 @@ public abstract class AbstractRequest implements DispatchRequest {
      * @return <code>true</code> if inclusion is forced.
      */
     protected boolean isForceInclude() {
-        Boolean forceInclude = (Boolean) getContext("request").get(
+        Boolean forceInclude = (Boolean) getContext(REQUEST_SCOPE).get(
                 FORCE_INCLUDE_ATTRIBUTE_NAME);
         if (forceInclude != null) {
             return forceInclude;
