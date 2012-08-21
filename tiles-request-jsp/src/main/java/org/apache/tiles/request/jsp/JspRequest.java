@@ -54,7 +54,7 @@ public class JspRequest extends AbstractViewRequest {
      * The native available scopes.
      */
     private static final List<String> SCOPES
-            = Collections.unmodifiableList(Arrays.asList("page", "request", "session", "application"));
+            = Collections.unmodifiableList(Arrays.asList("page", REQUEST_SCOPE, "session", APPLICATION_SCOPE));
 
     /**
      * The current page context.
@@ -203,11 +203,11 @@ public class JspRequest extends AbstractViewRequest {
     public Map<String, Object> getContext(String scope) {
         if("page".equals(scope)){
             return getPageScope();
-        }else if("request".equals(scope)){
+        }else if(REQUEST_SCOPE.equals(scope)){
             return getRequestScope();
         }else if("session".equals(scope)){
             return getSessionScope();
-        }else if("application".equals(scope)){
+        }else if(APPLICATION_SCOPE.equals(scope)){
             return getApplicationScope();
         }
         throw new IllegalArgumentException(scope + " does not exist. Call getAvailableScopes() first to check.");

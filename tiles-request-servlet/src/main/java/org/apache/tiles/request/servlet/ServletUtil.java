@@ -28,7 +28,7 @@ import javax.servlet.ServletException;
 
 import org.apache.tiles.request.ApplicationContext;
 import org.apache.tiles.request.ApplicationAccess;
-import org.apache.tiles.request.DispatchRequestWrapper;
+import org.apache.tiles.request.RequestWrapper;
 import org.apache.tiles.request.Request;
 
 /**
@@ -97,10 +97,10 @@ public final class ServletUtil {
             if (currentRequest instanceof ServletRequest) {
                 return (ServletRequest) currentRequest;
             }
-            if (!(currentRequest instanceof DispatchRequestWrapper)) {
+            if (!(currentRequest instanceof RequestWrapper)) {
                 throw new NotAServletEnvironmentException("Not a Servlet environment, not supported");
             }
-            currentRequest = ((DispatchRequestWrapper) currentRequest).getWrappedRequest();
+            currentRequest = ((RequestWrapper) currentRequest).getWrappedRequest();
         }
     }
 

@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import org.apache.tiles.request.Request;
 import org.apache.tiles.request.DispatchRequest;
+import org.apache.tiles.request.RequestWrapper;
 
 /**
  * Renders an attribute that contains a reference to a template.
@@ -38,15 +39,27 @@ public class DispatchRenderer implements Renderer {
         if (path == null) {
             throw new CannotRenderException("Cannot dispatch a null path");
         }
-        if (!(request instanceof DispatchRequest)) {
+        DispatchRequest dispatchRequest = getDispatchRequest(request);
+        if (dispatchRequest == null) {
             throw new CannotRenderException("Cannot dispatch outside of a web environment");
         }
 
-        ((DispatchRequest) request).dispatch(path);
+        dispatchRequest.dispatch(path);
     }
 
     /** {@inheritDoc} */
     public boolean isRenderable(String path, Request request) {
-        return path != null && path.startsWith("/");
+        return path != null && getDispatchRequest(request) != null && path.startsWith("/");
+    }
+
+    private DispatchRequest getDispatchRequest(Request request) {
+        Request result = request;
+        while (!(result instanceof DispatchRequest) && result instanceof RequestWrapper) {
+            result = ((RequestWrapper) result).getWrappedRequest();
+        }
+        if (!(result instanceof DispatchRequest)) {
+            result = null;
+        }
+        return (DispatchRequest) result;
     }
 }

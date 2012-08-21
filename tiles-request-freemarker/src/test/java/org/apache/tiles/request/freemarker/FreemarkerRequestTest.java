@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tiles.request.ApplicationContext;
+import org.apache.tiles.request.Request;
 import org.apache.tiles.request.DispatchRequest;
 import org.apache.tiles.request.servlet.ServletRequest;
 import org.junit.Before;
@@ -136,7 +137,7 @@ public class FreemarkerRequestTest {
 
         enclosedRequest.include(path);
         expect(enclosedRequest.getAvailableScopes()).andReturn(Collections.singletonList("parent"));
-        expect(enclosedRequest.getContext("request")).andReturn(requestScope);
+        expect(enclosedRequest.getContext(Request.REQUEST_SCOPE)).andReturn(requestScope);
         replay(enclosedRequest, applicationContext);
         context = new FreemarkerRequest(enclosedRequest, env);
         context.dispatch(path);

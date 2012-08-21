@@ -63,10 +63,10 @@ public final class MustacheRendererTest {
 
         expect(request.getApplicationContext()).andReturn(applicationContext);
         expect(applicationContext.getResource(isA(String.class))).andReturn(applicationResource).anyTimes();
-        expect(request.getAvailableScopes()).andReturn(Arrays.asList("request", "session", "application"));
-        expect(request.getContext("request")).andReturn(context);
+        expect(request.getAvailableScopes()).andReturn(Arrays.asList(Request.REQUEST_SCOPE, "session", Request.APPLICATION_SCOPE));
+        expect(request.getContext(Request.REQUEST_SCOPE)).andReturn(context);
         expect(request.getContext("session")).andReturn(Collections.<String,Object>emptyMap());
-        expect(request.getContext("application")).andReturn(Collections.<String,Object>emptyMap());
+        expect(request.getContext(Request.APPLICATION_SCOPE)).andReturn(Collections.<String,Object>emptyMap());
         expect(request.getWriter()).andReturn(writer);
         writer.write("test template with test value");
         writer.flush();

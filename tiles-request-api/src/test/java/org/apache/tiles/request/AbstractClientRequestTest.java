@@ -74,7 +74,7 @@ public class AbstractClientRequestTest {
     public void testDispatch() throws IOException {
         Map<String, Object> requestScope = new HashMap<String, Object>();
 
-        expect(request.getContext("request")).andReturn(requestScope).anyTimes();
+        expect(request.getContext(Request.REQUEST_SCOPE)).andReturn(requestScope).anyTimes();
         request.doForward("/my/path.html");
         request.doInclude("/my/path2.html");
 
@@ -92,12 +92,12 @@ public class AbstractClientRequestTest {
     public void testInclude() throws IOException {
         Map<String, Object> requestScope = new HashMap<String, Object>();
 
-        expect(request.getContext("request")).andReturn(requestScope).anyTimes();
+        expect(request.getContext(Request.REQUEST_SCOPE)).andReturn(requestScope).anyTimes();
         request.doInclude("/my/path2.html");
 
         replay(request, applicationContext);
         request.include("/my/path2.html");
-        assertTrue((Boolean)request.getContext("request").get(AbstractRequest.FORCE_INCLUDE_ATTRIBUTE_NAME));
+        assertTrue((Boolean)request.getContext(Request.REQUEST_SCOPE).get(AbstractRequest.FORCE_INCLUDE_ATTRIBUTE_NAME));
         verify(request, applicationContext);
     }
 
