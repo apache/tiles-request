@@ -24,11 +24,11 @@ under the License.
   <parent>
     <artifactId>tiles-request</artifactId>
     <groupId>org.apache.tiles</groupId>
-    <version>1.0.2</version>
+    <version>1.0.3-SNAPSHOT</version>
   </parent>
   <groupId>org.apache.tiles</groupId>
   <artifactId>tiles-request-mustache</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3-SNAPSHOT</version>
   <name>Tiles request - Mustache support</name>
   <description>Tiles request implementation for Mustache templates.</description>
   <dependencies>

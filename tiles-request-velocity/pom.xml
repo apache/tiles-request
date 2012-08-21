@@ -24,11 +24,11 @@ under the License.
   <parent>
     <artifactId>tiles-request</artifactId>
     <groupId>org.apache.tiles</groupId>
-    <version>1.0.2</version>
+    <version>1.0.3-SNAPSHOT</version>
   </parent>
   <groupId>org.apache.tiles</groupId>
   <artifactId>tiles-request-velocity</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3-SNAPSHOT</version>
   <name>Tiles Request - Velocity support</name>
   <description>Velocity implementation of the Tiles request framework</description>
   <dependencies>
