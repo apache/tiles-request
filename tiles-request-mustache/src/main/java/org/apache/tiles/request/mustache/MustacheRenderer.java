@@ -77,7 +77,7 @@ public class MustacheRenderer implements Renderer {
         }
     }
 
-    public static Request getThreadLocalRequest(){
+    public static Request getThreadLocalRequest() {
         return REQUEST_HOLDER.get();
     }
 

@@ -27,7 +27,7 @@ import org.apache.tiles.request.attribute.AttributeExtractor;
 public final class MustacheScopeExtractor  implements AttributeExtractor {
     private final Map<String,Object> scope;
 
-    public MustacheScopeExtractor(Map<String,Object> scope){
+    public MustacheScopeExtractor(Map<String,Object> scope) {
         this.scope = scope;
     }
 
