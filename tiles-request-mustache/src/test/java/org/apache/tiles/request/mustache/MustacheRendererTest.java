@@ -65,10 +65,10 @@ public final class MustacheRendererTest {
         Map<String,Object> context = Collections.singletonMap("testKey", (Object)"test value");
 
         expect(applicationContext.getResource(isA(String.class))).andReturn(applicationResource).anyTimes();
-        expect(request.getAvailableScopes()).andReturn(Arrays.asList(Request.REQUEST_SCOPE, "session", Request.APPLICATION_SCOPE));
-        expect(request.getContext(Request.REQUEST_SCOPE)).andReturn(context);
+        expect(request.getAvailableScopes()).andReturn(Arrays.asList("request"/*Request.REQUEST_SCOPE*/, "session", "application"/*Request.APPLICATION_SCOPE*/));
+        expect(request.getContext("request"/*Request.REQUEST_SCOPE*/)).andReturn(context);
         expect(request.getContext("session")).andReturn(Collections.<String,Object>emptyMap());
-        expect(request.getContext(Request.APPLICATION_SCOPE)).andReturn(Collections.<String,Object>emptyMap());
+        expect(request.getContext("application"/*Request.APPLICATION_SCOPE*/)).andReturn(Collections.<String,Object>emptyMap());
         expect(request.getWriter()).andReturn(writer).anyTimes();
 
         replay(request, applicationContext, applicationResource);
