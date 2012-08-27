@@ -21,19 +21,16 @@
 
 package org.apache.tiles.request.mustache;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.sampullara.mustache.MustacheBuilder;
-import com.sampullara.mustache.MustacheException;
-import com.sampullara.mustache.Scope;
-import org.apache.tiles.request.ApplicationContext;
-import org.apache.tiles.request.ApplicationResource;
+import com.github.mustachejava.MustacheFactory;
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.MustacheException;
 import org.apache.tiles.request.Request;
 import org.apache.tiles.request.render.CannotRenderException;
 import org.apache.tiles.request.render.Renderer;
@@ -41,11 +38,26 @@ import org.apache.tiles.request.render.Renderer;
 /**
  * The Mustache-specific renderer.
  *
+ * Can be configured to render paths only according to the acceptPattern.
+ *
  * @version $Rev: 1215006 $ $Date: 2011-12-16 01:30:41 +0100 (Fri, 16 Dec 2011) $
  */
-public final class MustacheRenderer implements Renderer {
+public class MustacheRenderer implements Renderer {
 
+    // hack. exposes the tiles Request for MustacheFactory implementations.
+    private static final ThreadLocal<Request> REQUEST_HOLDER = new ThreadLocal<Request>();
+
+    private final MustacheFactory factory;
     private Pattern acceptPattern;
+
+    /** Uses the {@link DefaultMustacheFactory} */
+    public MustacheRenderer(){
+        this.factory = new DefaultMustacheFactory();
+    }
+
+    public MustacheRenderer(MustacheFactory factory) {
+        this.factory = factory;
+    }
 
     @Override
     public void render(String path, Request request) throws IOException {
@@ -53,34 +65,32 @@ public final class MustacheRenderer implements Renderer {
             throw new CannotRenderException("Cannot dispatch a null path");
         }
 
-        try{
-            new MustacheBuilder()
-                    .build(new BufferedReader(new InputStreamReader(getResourceStream(request, path))), path)
+        try {
+            REQUEST_HOLDER.set(request);
+            factory
+                    .compile(path)
                     .execute(request.getWriter(), buildScope(request));
+            REQUEST_HOLDER.remove();
 
-        }catch(MustacheException ex){
+        } catch(MustacheException ex) {
             throw new IOException("failed to MustacheRenderer.render(" + path + ",request)", ex);
         }
     }
 
-    private static InputStream getResourceStream(Request request, String path) throws IOException {
-        final ApplicationContext applicationContext = request.getApplicationContext();
-        final ApplicationResource resource = applicationContext.getResource(path);
-        return resource.getInputStream();
+    public static Request getThreadLocalRequest(){
+        return REQUEST_HOLDER.get();
     }
 
-    private static Scope buildScope(Request request){
-        Scope scope = null;
+    protected Map<String,Object> buildScope(Request request) {
+        Map<String,Object> scope = new HashMap<String,Object>();
         List<String> availableScopes = request.getAvailableScopes();
-        for(int i = availableScopes.size() -1; i >= 0; --i){
-            scope = null == scope
-                    ? new Scope(request.getContext(availableScopes.get(i)))
-                    : new Scope(request.getContext(availableScopes.get(i)), scope);
+        for (int i = availableScopes.size() -1; i >= 0; --i) {
+            scope.putAll(request.getContext(availableScopes.get(i)));
         }
         return scope;
     }
 
-    //@Override
+    @Override
     public boolean isRenderable(String path, Request request) {
         if (path == null) {
             return false;
@@ -92,7 +102,7 @@ public final class MustacheRenderer implements Renderer {
         return true;
     }
 
-    public void setAcceptPattern(Pattern acceptPattern) {
+    public final void setAcceptPattern(Pattern acceptPattern) {
         this.acceptPattern = acceptPattern;
     }
 }
