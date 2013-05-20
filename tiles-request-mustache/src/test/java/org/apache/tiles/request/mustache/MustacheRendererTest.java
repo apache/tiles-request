@@ -22,21 +22,25 @@ package org.apache.tiles.request.mustache;
 
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.github.mustachejava.DefaultMustacheFactory;
 import org.apache.tiles.request.ApplicationContext;
 import org.apache.tiles.request.ApplicationResource;
-import org.apache.tiles.request.mustache.MustacheRenderer;
 import org.apache.tiles.request.render.CannotRenderException;
 import org.apache.tiles.request.render.Renderer;
 import org.apache.tiles.request.Request;
 import org.junit.Test;
 
 import static org.easymock.classextension.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -54,27 +58,29 @@ public final class MustacheRendererTest {
     @Test
     public void testRender() throws IOException {
         Request request = createMock(Request.class);
-        Writer writer = createMock(Writer.class);
+        StringWriter writer = new StringWriter();
         ApplicationContext applicationContext = createMock(ApplicationContext.class);
         ApplicationResource applicationResource = createMock(ApplicationResource.class);
-        expect(applicationResource.getInputStream()).andReturn(getClass().getResource("/test.html").openStream());
 
         Map<String,Object> context = Collections.singletonMap("testKey", (Object)"test value");
 
-        expect(request.getApplicationContext()).andReturn(applicationContext);
         expect(applicationContext.getResource(isA(String.class))).andReturn(applicationResource).anyTimes();
         expect(request.getAvailableScopes()).andReturn(Arrays.asList(Request.REQUEST_SCOPE, "session", Request.APPLICATION_SCOPE));
         expect(request.getContext(Request.REQUEST_SCOPE)).andReturn(context);
         expect(request.getContext("session")).andReturn(Collections.<String,Object>emptyMap());
         expect(request.getContext(Request.APPLICATION_SCOPE)).andReturn(Collections.<String,Object>emptyMap());
-        expect(request.getWriter()).andReturn(writer);
-        writer.write("test template with test value");
-        writer.flush();
+        expect(request.getWriter()).andReturn(writer).anyTimes();
 
-        replay(request, applicationContext, applicationResource, writer);
-        Renderer renderer = new MustacheRenderer();
+        replay(request, applicationContext, applicationResource);
+        Renderer renderer = new MustacheRenderer(new DefaultMustacheFactory() {
+                @Override
+                public Reader getReader(String path) {
+                    return new InputStreamReader(getClass().getResourceAsStream(path), Charset.forName("utf-8"));
+                }
+            });
         renderer.render("/test.html", request);
-        verify(request, applicationContext, applicationResource, writer);
+        verify(request, applicationContext, applicationResource);
+        assertEquals("test template with test value", writer.toString());
     }
 
     /**

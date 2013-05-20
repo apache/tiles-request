@@ -18,16 +18,16 @@ package org.apache.tiles.request.mustache;
 
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Set;
 
-import com.sampullara.mustache.Scope;
 import org.apache.tiles.request.attribute.AttributeExtractor;
 
 
 public final class MustacheScopeExtractor  implements AttributeExtractor {
-    private final Scope scope;
+    private final Map<String,Object> scope;
 
-    public MustacheScopeExtractor(Scope scope){
+    public MustacheScopeExtractor(Map<String,Object> scope) {
         this.scope = scope;
     }
 
@@ -48,6 +48,6 @@ public final class MustacheScopeExtractor  implements AttributeExtractor {
 
     @Override
     public void setValue(String key, Object value) {
-        scope.put(value, value);
+        scope.put(key, value);
     }
 }

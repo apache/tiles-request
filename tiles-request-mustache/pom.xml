@@ -38,11 +38,8 @@ under the License.
     </dependency>
     <dependency>
         <groupId>com.github.spullara.mustache.java</groupId>
-        <artifactId>core</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>com.github.spullara.mustache.java</groupId>
-        <artifactId>builder</artifactId>
+        <artifactId>compiler</artifactId>
+        <version>0.8.4</version>
     </dependency>
     <dependency>
     	<groupId>junit</groupId>
