@@ -29,15 +29,15 @@ under the License.
     </parent>
     <groupId>org.apache.tiles</groupId>
     <artifactId>tiles-request</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Tiles Request Framework</name>
     <description>Request abstraction for various request and template technologies</description>
     <url>http://tiles.apache.org/tiles-request/</url>
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/tiles/request/tags/tiles-request-1.0.3</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/tiles/request/tags/tiles-request-1.0.3</developerConnection>
-        <url>http://svn.apache.org/viewvc/tiles/request/tags/tiles-request-1.0.3</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/tiles/request/branches/TREQ_1_0_X</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/tiles/request/branches/TREQ_1_0_X</developerConnection>
+        <url>http://svn.apache.org/viewvc/tiles/request/branches/TREQ_1_0_X</url>
     </scm>
     <issueManagement>
         <system>JIRA</system>
