@@ -102,13 +102,13 @@ public class WildcardPortletApplicationContextTest extends TestCase {
                 .anyTimes();
         File dir = new File(".");
         EasyMock.expect(portletContext.getResource("/WEB-INF/")).andReturn(
-                dir.toURI().toURL());
+                dir.toURI().toURL()).anyTimes();
         URL pomUrl = new URL("file://tiles/pom.xml");
         EasyMock.expect(portletContext.getResource("/WEB-INF/pom.xml"))
-                .andReturn(pomUrl);
+                .andReturn(pomUrl).anyTimes();
         Set<String> elementSet = new HashSet<String>();
         elementSet.add("/WEB-INF/pom.xml");
-        EasyMock.expect(portletContext.getResourcePaths("/WEB-INF/")).andReturn(elementSet);
+        EasyMock.expect(portletContext.getResourcePaths("/WEB-INF/")).andReturn(elementSet).anyTimes();
         EasyMock.replay(portletContext);
 
         assertEquals(new URLApplicationResource(u.toExternalForm(), u), context.getResource("/" + url));
