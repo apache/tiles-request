@@ -21,14 +21,18 @@
 
 package org.apache.tiles.request.locale;
 
+import java.util.Arrays;
+import java.util.IllformedLocaleException;
+import java.util.List;
 import java.util.Locale;
-
 import org.apache.tiles.request.ApplicationResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An ApplicationResource whose localization is managed by postfixing the file name.
  * The various localizations are file sitting next to each other, with the locale identified in the postfix.
- * 
+ *
  * For instance:
  * <pre>
  * /WEB-INF/tiles.xml
@@ -36,12 +40,14 @@ import org.apache.tiles.request.ApplicationResource;
  * /WEB-INF/tiles_it.xml
  * /WEB-INF/tiles_it_IT.xml
  * </pre>
- * 
+ *
  * Two PostfixedApplicationResources are equals if they share the same localized path and the same class.
- * 
+ *
  * @version $Rev$ $Date$
  */
 public abstract class PostfixedApplicationResource implements ApplicationResource {
+
+    private static final Logger LOG = LoggerFactory.getLogger(PostfixedApplicationResource.class);
 
     /** The path without its suffix and its locale postfix. */
     private String pathPrefix;
@@ -69,18 +75,18 @@ public abstract class PostfixedApplicationResource implements ApplicationResourc
         } else {
             pathPrefix = localePath.substring(0, prefixIndex);
             String localeString = localePath.substring(prefixIndex + 1, suffixIndex);
-            int countryIndex = localeString.indexOf('_');
-            if (countryIndex < 0) {
-                locale = new Locale(localeString);
-            } else {
-                int variantIndex = localeString.indexOf('_', countryIndex + 1);
-                if (variantIndex < 0) {
-                    locale = new Locale(localeString.substring(0, countryIndex),
-                            localeString.substring(countryIndex + 1));
-                } else {
-                    locale = new Locale(localeString.substring(0, countryIndex), localeString.substring(
-                            countryIndex + 1, variantIndex), localeString.substring(variantIndex + 1));
-                }
+            Locale found = localeFrom(localeString);
+            locale = validateLocale(found);
+            if (Locale.ROOT.equals(locale)) {
+                pathPrefix = suffixIndex < 0 ? localePath : localePath.substring(0, suffixIndex);
+
+                LOG.warn("No supported matching language for locale \"" + localeString + "\". Using "
+                        + getPath() + " as a non-localized resource path. see TILES-571");
+
+            } else if (!localeString.equalsIgnoreCase(getPostfix(locale).substring(1))) {
+                LOG.warn("For resource " + localePath
+                        + " the closest supported matching locale to \"" + localeString + "\" is \"" + locale
+                        + "\". Using " + getPath() + " as resource path. see TILES-571");
             }
         }
     }
@@ -192,5 +198,46 @@ public abstract class PostfixedApplicationResource implements ApplicationResourc
         } else if (!suffix.equals(other.suffix))
             return false;
         return true;
+    }
+
+    private static Locale localeFrom(String localeString) {
+        Locale.Builder builder = new Locale.Builder();
+        try {
+            int countryIndex = localeString.indexOf('_');
+            if (countryIndex < 0) {
+                builder.setLanguage(localeString);
+            } else {
+                int variantIndex = localeString.indexOf('_', countryIndex + 1);
+                builder.setLanguage(localeString.substring(0, countryIndex));
+                if (variantIndex < 0) {
+                    builder.setRegion(localeString.substring(countryIndex + 1));
+                } else {
+                    builder.setRegion(localeString.substring(countryIndex + 1, variantIndex));
+                    builder.setVariant(localeString.substring(variantIndex + 1));
+                }
+            }
+        } catch (IllformedLocaleException ex) {
+            LOG.debug(localeString + " is an ill-formed locale", ex);
+        }
+        return builder.build();
+    }
+
+    private static Locale validateLocale(Locale locale) {
+        List<Locale> availableLocales = Arrays.asList(Locale.getAvailableLocales());
+
+        Locale withoutVariant = locale.getVariant().isEmpty()
+                ? locale
+                : new Locale(locale.getLanguage(), locale.getCountry());
+
+        Locale result = locale;
+        if (!availableLocales.contains(withoutVariant)) {
+            if (!result.getCountry().isEmpty()) {
+                result = new Locale(result.getLanguage());
+            }
+            if (!availableLocales.contains(result)) {
+                result = Locale.ROOT;
+            }
+        }
+        return result;
     }
 }
