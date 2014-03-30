@@ -24,11 +24,11 @@ under the License.
     <parent>
         <artifactId>tiles-request</artifactId>
         <groupId>org.apache.tiles</groupId>
-        <version>1.0.4</version>
+        <version>1.0.5-SNAPSHOT</version>
     </parent>
     <groupId>org.apache.tiles</groupId>
     <artifactId>tiles-request-api</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5-SNAPSHOT</version>
     <name>Tiles request - API</name>
     <description>API for the Tiles Request framework.</description>
     <dependencies>

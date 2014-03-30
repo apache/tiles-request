@@ -24,11 +24,11 @@ under the License.
 	<parent>
 		<artifactId>tiles-request</artifactId>
 		<groupId>org.apache.tiles</groupId>
-		<version>1.0.4</version>
+		<version>1.0.5-SNAPSHOT</version>
 	</parent>
 	<groupId>org.apache.tiles</groupId>
 	<artifactId>tiles-request-jsp</artifactId>
-	<version>1.0.4</version>
+	<version>1.0.5-SNAPSHOT</version>
 	<name>Tiles Request - JSP support</name>
 	<description>JSP implementation of the Tiles Request framework.</description>
 	<dependencies>
