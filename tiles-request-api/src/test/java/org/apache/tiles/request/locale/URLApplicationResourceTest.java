@@ -97,6 +97,42 @@ public class URLApplicationResourceTest {
         assertEquals("file:/", resource.getURL().toString());
         assertEquals("/", resource.getFile().toString());
         assertEquals(Locale.ROOT, resource.getLocale());
+        resource = new TestApplicationResource("/my/path_zz.html", new URL("file:///"));
+        assertEquals("/my/path_zz.html", resource.getLocalePath());
+        assertEquals("/my/path_zz.html", resource.getPath());
+        assertEquals("file:/", resource.getURL().toString());
+        assertEquals("/", resource.getFile().toString());
+        assertEquals(Locale.ROOT, resource.getLocale());
+        resource = new TestApplicationResource("/my/path_en_ZZ.html", new URL("file:///"));
+        assertEquals("/my/path_en.html", resource.getLocalePath());
+        assertEquals("/my/path.html", resource.getPath());
+        assertEquals("file:/", resource.getURL().toString());
+        assertEquals("/", resource.getFile().toString());
+        assertEquals(new Locale("en"), resource.getLocale());
+        resource = new TestApplicationResource("/my/path_tiles.html", new URL("file:///"));
+        assertEquals("/my/path_tiles.html", resource.getLocalePath());
+        assertEquals("/my/path_tiles.html", resource.getPath());
+        assertEquals("file:/", resource.getURL().toString());
+        assertEquals("/", resource.getFile().toString());
+        assertEquals(Locale.ROOT, resource.getLocale());
+        resource = new TestApplicationResource("/my/path_longwordthatbreaksISO639.html", new URL("file:///"));
+        assertEquals("/my/path_longwordthatbreaksISO639.html", resource.getLocalePath());
+        assertEquals("/my/path_longwordthatbreaksISO639.html", resource.getPath());
+        assertEquals("file:/", resource.getURL().toString());
+        assertEquals("/", resource.getFile().toString());
+        assertEquals(Locale.ROOT, resource.getLocale());
+        resource = new TestApplicationResource("/my/path_en_tiles.html", new URL("file:///"));
+        assertEquals("/my/path_en.html", resource.getLocalePath());
+        assertEquals("/my/path.html", resource.getPath());
+        assertEquals("file:/", resource.getURL().toString());
+        assertEquals("/", resource.getFile().toString());
+        assertEquals(new Locale("en"), resource.getLocale());
+        resource = new TestApplicationResource("/my/path_en_longwordthatbreaksISO3166.html", new URL("file:///"));
+        assertEquals("/my/path_en.html", resource.getLocalePath());
+        assertEquals("/my/path.html", resource.getPath());
+        assertEquals("file:/", resource.getURL().toString());
+        assertEquals("/", resource.getFile().toString());
+        assertEquals(new Locale("en"), resource.getLocale());
     }
 
     @Test
