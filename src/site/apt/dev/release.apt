@@ -295,7 +295,7 @@ svn ci
 --------------------------------------
 Subject: [ANNOUNCE] Tiles Request ${version} ${quality} released
 
-The Apache Request Tiles team is pleased to announce the release of Tiles ${version}
+The Apache Tiles team is pleased to announce the release of Tiles Request ${version}
 ${quality}.
 
 Available in binary and source distribution.
