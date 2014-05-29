@@ -22,7 +22,6 @@
 package org.apache.tiles.request.locale;
 
 import java.util.Arrays;
-import java.util.IllformedLocaleException;
 import java.util.List;
 import java.util.Locale;
 import org.apache.tiles.request.ApplicationResource;
@@ -201,6 +200,27 @@ public abstract class PostfixedApplicationResource implements ApplicationResourc
     }
 
     private static Locale localeFrom(String localeString) {
+        Locale result;
+        int countryIndex = localeString.indexOf('_');
+        if (countryIndex < 0) {
+            result = new Locale(localeString);
+        } else {
+            int variantIndex = localeString.indexOf('_', countryIndex + 1);
+            if (variantIndex < 0) {
+                result = new Locale(
+                        localeString.substring(0, countryIndex),
+                        localeString.substring(countryIndex + 1));
+            } else {
+                result = new Locale(
+                        localeString.substring(0, countryIndex),
+                        localeString.substring(countryIndex + 1, variantIndex),
+                        localeString.substring(variantIndex + 1));
+            }
+        }
+        return result;
+    }
+    /*
+    private static Locale java7_localeFrom(String localeString) {
         Locale.Builder builder = new Locale.Builder();
         try {
             int countryIndex = localeString.indexOf('_');
@@ -221,6 +241,7 @@ public abstract class PostfixedApplicationResource implements ApplicationResourc
         }
         return builder.build();
     }
+    */
 
     private static Locale validateLocale(Locale locale) {
         List<Locale> availableLocales = Arrays.asList(Locale.getAvailableLocales());
