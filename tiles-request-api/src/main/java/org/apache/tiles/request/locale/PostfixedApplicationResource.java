@@ -22,7 +22,9 @@
 package org.apache.tiles.request.locale;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Locale;
 import org.apache.tiles.request.ApplicationResource;
 import org.slf4j.Logger;
@@ -243,9 +245,9 @@ public abstract class PostfixedApplicationResource implements ApplicationResourc
     }
     */
 
-    private static Locale validateLocale(Locale locale) {
-        List<Locale> availableLocales = Arrays.asList(Locale.getAvailableLocales());
+    private static Set<Locale> availableLocales = new HashSet<Locale>(Arrays.asList(Locale.getAvailableLocales()));
 
+    private static Locale validateLocale(Locale locale) {
         Locale withoutVariant = locale.getVariant().isEmpty()
                 ? locale
                 : new Locale(locale.getLanguage(), locale.getCountry());
