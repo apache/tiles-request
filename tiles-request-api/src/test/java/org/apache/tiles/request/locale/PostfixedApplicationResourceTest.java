@@ -61,75 +61,75 @@ public class PostfixedApplicationResourceTest {
      */
     @Test
     public void testGetLocalePath() {
-        TestApplicationResource resource = new TestApplicationResource("/my/path_fr.html");
-        assertEquals("/my/path.html", resource.getLocalePath(null));
-        assertEquals("/my/path.html", resource.getLocalePath(Locale.ROOT));
-        assertEquals("/my/path_it.html", resource.getLocalePath(Locale.ITALIAN));
-        assertEquals("/my/path_it_IT.html", resource.getLocalePath(Locale.ITALY));
-        assertEquals("/my/path_en_GB_scotland.html", resource.getLocalePath(new Locale("en", "GB", "scotland")));
+        TestApplicationResource resource = new TestApplicationResource("/my test/path_fr.html");
+        assertEquals("/my test/path.html", resource.getLocalePath(null));
+        assertEquals("/my test/path.html", resource.getLocalePath(Locale.ROOT));
+        assertEquals("/my test/path_it.html", resource.getLocalePath(Locale.ITALIAN));
+        assertEquals("/my test/path_it_IT.html", resource.getLocalePath(Locale.ITALY));
+        assertEquals("/my test/path_en_GB_scotland.html", resource.getLocalePath(new Locale("en", "GB", "scotland")));
     }
 
     @Test
     public void testBuildFromString() {
-        TestApplicationResource resource = new TestApplicationResource("/my/path_en_GB_scotland.html");
-        assertEquals("/my/path_en_GB_scotland.html", resource.getLocalePath());
-        assertEquals("/my/path.html", resource.getPath());
+        TestApplicationResource resource = new TestApplicationResource("/my test/path_en_GB_scotland.html");
+        assertEquals("/my test/path_en_GB_scotland.html", resource.getLocalePath());
+        assertEquals("/my test/path.html", resource.getPath());
         assertEquals(new Locale("en", "GB", "scotland"), resource.getLocale());
-        resource = new TestApplicationResource("/my/path_it_IT.html");
-        assertEquals("/my/path_it_IT.html", resource.getLocalePath());
-        assertEquals("/my/path.html", resource.getPath());
+        resource = new TestApplicationResource("/my test/path_it_IT.html");
+        assertEquals("/my test/path_it_IT.html", resource.getLocalePath());
+        assertEquals("/my test/path.html", resource.getPath());
         assertEquals(Locale.ITALY, resource.getLocale());
-        resource = new TestApplicationResource("/my/path_it.html");
-        assertEquals("/my/path_it.html", resource.getLocalePath());
-        assertEquals("/my/path.html", resource.getPath());
+        resource = new TestApplicationResource("/my test/path_it.html");
+        assertEquals("/my test/path_it.html", resource.getLocalePath());
+        assertEquals("/my test/path.html", resource.getPath());
         assertEquals(Locale.ITALIAN, resource.getLocale());
-        resource = new TestApplicationResource("/my/path.html");
-        assertEquals("/my/path.html", resource.getLocalePath());
-        assertEquals("/my/path.html", resource.getPath());
+        resource = new TestApplicationResource("/my test/path.html");
+        assertEquals("/my test/path.html", resource.getLocalePath());
+        assertEquals("/my test/path.html", resource.getPath());
         assertEquals(Locale.ROOT, resource.getLocale());
-        resource = new TestApplicationResource("/my/path_zz.html");
-        assertEquals("/my/path_zz.html", resource.getLocalePath());
-        assertEquals("/my/path_zz.html", resource.getPath());
+        resource = new TestApplicationResource("/my test/path_zz.html");
+        assertEquals("/my test/path_zz.html", resource.getLocalePath());
+        assertEquals("/my test/path_zz.html", resource.getPath());
         assertEquals(Locale.ROOT, resource.getLocale());
-        resource = new TestApplicationResource("/my/path_en_ZZ.html");
-        assertEquals("/my/path_en.html", resource.getLocalePath());
-        assertEquals("/my/path.html", resource.getPath());
+        resource = new TestApplicationResource("/my test/path_en_ZZ.html");
+        assertEquals("/my test/path_en.html", resource.getLocalePath());
+        assertEquals("/my test/path.html", resource.getPath());
         assertEquals(new Locale("en"), resource.getLocale());
-        resource = new TestApplicationResource("/my/path_tiles.html");
-        assertEquals("/my/path_tiles.html", resource.getLocalePath());
-        assertEquals("/my/path_tiles.html", resource.getPath());
+        resource = new TestApplicationResource("/my test/path_tiles.html");
+        assertEquals("/my test/path_tiles.html", resource.getLocalePath());
+        assertEquals("/my test/path_tiles.html", resource.getPath());
         assertEquals(Locale.ROOT, resource.getLocale());
-        resource = new TestApplicationResource("/my/path_longwordthatbreaksISO639.html");
-        assertEquals("/my/path_longwordthatbreaksISO639.html", resource.getLocalePath());
-        assertEquals("/my/path_longwordthatbreaksISO639.html", resource.getPath());
+        resource = new TestApplicationResource("/my test/path_longwordthatbreaksISO639.html");
+        assertEquals("/my test/path_longwordthatbreaksISO639.html", resource.getLocalePath());
+        assertEquals("/my test/path_longwordthatbreaksISO639.html", resource.getPath());
         assertEquals(Locale.ROOT, resource.getLocale());
-        resource = new TestApplicationResource("/my/path_en_tiles.html");
-        assertEquals("/my/path_en.html", resource.getLocalePath());
-        assertEquals("/my/path.html", resource.getPath());
+        resource = new TestApplicationResource("/my test/path_en_tiles.html");
+        assertEquals("/my test/path_en.html", resource.getLocalePath());
+        assertEquals("/my test/path.html", resource.getPath());
         assertEquals(new Locale("en"), resource.getLocale());
-        resource = new TestApplicationResource("/my/path_en_longwordthatbreaksISO3166.html");
-        assertEquals("/my/path_en.html", resource.getLocalePath());
-        assertEquals("/my/path.html", resource.getPath());
+        resource = new TestApplicationResource("/my test/path_en_longwordthatbreaksISO3166.html");
+        assertEquals("/my test/path_en.html", resource.getLocalePath());
+        assertEquals("/my test/path.html", resource.getPath());
         assertEquals(new Locale("en"), resource.getLocale());
     }
 
     @Test
     public void testBuildFromStringAndLocale() {
-        TestApplicationResource resource = new TestApplicationResource("/my/path.html", new Locale("en", "GB", "scotland"));
-        assertEquals("/my/path_en_GB_scotland.html", resource.getLocalePath());
-        assertEquals("/my/path.html", resource.getPath());
+        TestApplicationResource resource = new TestApplicationResource("/my test/path.html", new Locale("en", "GB", "scotland"));
+        assertEquals("/my test/path_en_GB_scotland.html", resource.getLocalePath());
+        assertEquals("/my test/path.html", resource.getPath());
         assertEquals(new Locale("en", "GB", "scotland"), resource.getLocale());
-        resource = new TestApplicationResource("/my/path.html", Locale.ITALY);
-        assertEquals("/my/path_it_IT.html", resource.getLocalePath());
-        assertEquals("/my/path.html", resource.getPath());
+        resource = new TestApplicationResource("/my test/path.html", Locale.ITALY);
+        assertEquals("/my test/path_it_IT.html", resource.getLocalePath());
+        assertEquals("/my test/path.html", resource.getPath());
         assertEquals(Locale.ITALY, resource.getLocale());
-        resource = new TestApplicationResource("/my/path.html", Locale.ITALIAN);
-        assertEquals("/my/path_it.html", resource.getLocalePath());
-        assertEquals("/my/path.html", resource.getPath());
+        resource = new TestApplicationResource("/my test/path.html", Locale.ITALIAN);
+        assertEquals("/my test/path_it.html", resource.getLocalePath());
+        assertEquals("/my test/path.html", resource.getPath());
         assertEquals(Locale.ITALIAN, resource.getLocale());
-        resource = new TestApplicationResource("/my/path.html", Locale.ROOT);
-        assertEquals("/my/path.html", resource.getLocalePath());
-        assertEquals("/my/path.html", resource.getPath());
+        resource = new TestApplicationResource("/my test/path.html", Locale.ROOT);
+        assertEquals("/my test/path.html", resource.getLocalePath());
+        assertEquals("/my test/path.html", resource.getPath());
         assertEquals(Locale.ROOT, resource.getLocale());
     }
 }
