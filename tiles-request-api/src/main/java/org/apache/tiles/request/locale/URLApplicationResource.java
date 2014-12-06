@@ -26,10 +26,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.JarURLConnection;
-import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Locale;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A {@link PostfixedApplicationResource} that can be accessed through a URL.
@@ -38,6 +42,7 @@ import java.util.Locale;
  */
 
 public class URLApplicationResource extends PostfixedApplicationResource {
+    private static final Logger LOG = LoggerFactory.getLogger(URLApplicationResource.class);
 
     /** the URL where the contents can be found. */
     private URL url;
@@ -54,7 +59,7 @@ public class URLApplicationResource extends PostfixedApplicationResource {
         super(localePath);
         this.url = url;
         if ("file".equals(url.getProtocol())) {
-            file = new File(url.getPath());
+            file = getFile(url);
         }
     }
 
@@ -65,14 +70,23 @@ public class URLApplicationResource extends PostfixedApplicationResource {
      * @param locale the Locale.
      * @param url the URL where the contents can be found.
      */
-    public URLApplicationResource(String path, Locale locale, URL url) throws MalformedURLException {
+    public URLApplicationResource(String path, Locale locale, URL url) {
         super(path, locale);
         this.url = url;
         if ("file".equals(url.getProtocol())) {
-            file = new File(url.getPath());
+            file = getFile(url);
         }
     }
 
+    private static File getFile(URL url) {
+    	try {
+			return new File(new URI(url.toExternalForm()).getSchemeSpecificPart());
+		} catch (URISyntaxException e) {
+			LOG.debug("Cannot translate URL to file name, expect a performance impact", e);
+			return null;
+		}
+    }
+    
     /** {@inheritDoc} */
     @Override
     public InputStream getInputStream() throws IOException {
