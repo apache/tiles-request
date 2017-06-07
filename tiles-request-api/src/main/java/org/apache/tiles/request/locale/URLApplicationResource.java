@@ -21,19 +21,13 @@
 
 package org.apache.tiles.request.locale;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.JarURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Locale;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.net.*;
+import java.util.Locale;
+import java.util.jar.Manifest;
 
 /**
  * A {@link PostfixedApplicationResource} that can be accessed through a URL.
@@ -48,6 +42,8 @@ public class URLApplicationResource extends PostfixedApplicationResource {
     private URL url;
     /** if the URL matches a file, this is the file. */
     private File file;
+    /** if the URL points into an OSGi bundle, this is true */
+    private boolean bundle;
 
     /**
      * Creates a URLApplicationResource for the specified path that can be accessed through the specified URL.
@@ -60,6 +56,8 @@ public class URLApplicationResource extends PostfixedApplicationResource {
         this.url = url;
         if ("file".equals(url.getProtocol())) {
             file = getFile(url);
+        } else {
+            bundle = checkBundle(url);
         }
     }
 
@@ -75,6 +73,27 @@ public class URLApplicationResource extends PostfixedApplicationResource {
         this.url = url;
         if ("file".equals(url.getProtocol())) {
             file = getFile(url);
+        } else {
+            bundle = checkBundle(url);
+        }
+    }
+
+    private static boolean checkBundle(URL url) {
+        try {
+            URL manifestUrl = new URL(url.toExternalForm().replace(url.getFile(), "/META-INF/MANIFEST.MF"));
+            InputStream in = manifestUrl.openStream();
+            try {
+                return new Manifest(in).getMainAttributes().getValue("Bundle-SymbolicName") != null;
+            } finally {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    LOG.debug("Manifest could not be closed properly", e);
+                }
+            }
+        } catch (IOException e) {
+            LOG.debug("No manifest found", e);
+            return false;
         }
     }
 
@@ -86,6 +105,20 @@ public class URLApplicationResource extends PostfixedApplicationResource {
 			return null;
 		}
     }
+
+    private URLConnection openConnection() throws IOException {
+        try {
+            return url.openConnection();
+        } catch (IOException e) {
+            // If the url points into a bundle but the resource cannot be
+            // opened means, that the resource actually does not exist. In this
+            // case throw a FileNotFoundException, see
+            if (bundle) {
+                throw new FileNotFoundException(url.toString());
+            }
+            throw e;
+        }
+    }
     
     /** {@inheritDoc} */
     @Override
@@ -93,7 +126,7 @@ public class URLApplicationResource extends PostfixedApplicationResource {
         if (file != null) {
             return new FileInputStream(file);
         } else {
-            return url.openConnection().getInputStream();
+            return openConnection().getInputStream();
         }
     }
 
@@ -103,7 +136,7 @@ public class URLApplicationResource extends PostfixedApplicationResource {
         if (file != null) {
             return file.lastModified();
         } else {
-            URLConnection connection = url.openConnection();
+            URLConnection connection = openConnection();
             if (connection instanceof JarURLConnection) {
                 return ((JarURLConnection) connection).getJarEntry().getTime();
             } else {

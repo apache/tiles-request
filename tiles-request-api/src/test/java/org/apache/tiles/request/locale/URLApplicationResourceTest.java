@@ -20,20 +20,18 @@
  */
 
 package org.apache.tiles.request.locale;
+import org.junit.Test;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Tests URLApplicationResource.
@@ -41,26 +39,6 @@ import org.junit.Test;
  * @version $Rev$ $Date$
  */
 public class URLApplicationResourceTest {
-
-    private class TestApplicationResource extends URLApplicationResource {
-        public TestApplicationResource(String localePath, URL url) throws URISyntaxException {
-            super(localePath, url);
-        }
-
-        public TestApplicationResource(String path, Locale locale, URL url) throws MalformedURLException, URISyntaxException {
-            super(path, locale, url);
-        }
-
-        @Override
-        protected URL getURL(){
-            return super.getURL();
-        }
-
-        @Override
-        protected File getFile(){
-            return super.getFile();
-        }
-    };
 
     /**
      * Test getLocalePath(String path, Locale locale).
@@ -200,5 +178,16 @@ public class URLApplicationResourceTest {
     	InputStream is = resource.getInputStream();
     	assertNotNull(is);
     	is.close();
+    }
+
+    @Test
+    public void testProtocolNotFileAndNoManifestFound() throws IOException {
+        URL url = new URL("http://--$_foo.org/bar.txt");
+        URLApplicationResource resource = new URLApplicationResource("org/apache/tiles/request/test/locale/resource.txt", url);
+        try {
+            resource.getInputStream();
+        } catch (IOException e) {
+            assertFalse(e instanceof FileNotFoundException);
+        }
     }
 }
