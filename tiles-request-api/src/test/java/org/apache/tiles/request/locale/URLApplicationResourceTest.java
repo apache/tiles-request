@@ -22,13 +22,8 @@
 package org.apache.tiles.request.locale;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
 import java.util.Locale;
 
 import static org.junit.Assert.*;
@@ -39,6 +34,47 @@ import static org.junit.Assert.*;
  * @version $Rev$ $Date$
  */
 public class URLApplicationResourceTest {
+
+    private static class TestUrlConnection extends URLConnection {
+        private static boolean alreadyCalled;
+
+        public TestUrlConnection(final URL url) {
+            super(url);
+        }
+
+        @Override
+        public InputStream getInputStream() throws IOException {
+            if (alreadyCalled) {
+                fail("Connect has already been called!");
+            }
+            alreadyCalled = true;
+            return new ByteArrayInputStream(new byte[0]);
+        }
+
+        @Override
+        public void connect() throws IOException {
+            // noop
+        }
+    }
+
+    private static class TestUrlStreamHandler extends URLStreamHandler {
+
+        @Override
+        protected URLConnection openConnection(final URL u) throws IOException {
+            return new TestUrlConnection(u);
+        }
+    }
+
+    private static class TestURLStreamHandlerFactory implements URLStreamHandlerFactory {
+
+        @Override
+        public URLStreamHandler createURLStreamHandler(final String protocol) {
+            if ("test".equals(protocol)) {
+                return new TestUrlStreamHandler();
+            }
+            return null;
+        }
+    }
 
     /**
      * Test getLocalePath(String path, Locale locale).
@@ -178,6 +214,16 @@ public class URLApplicationResourceTest {
     	InputStream is = resource.getInputStream();
     	assertNotNull(is);
     	is.close();
+    }
+
+    @Test
+    public void testUseCachedBundleCheckResult() throws IOException {
+        URL.setURLStreamHandlerFactory(new TestURLStreamHandlerFactory());
+        URL url = new URL("test://foo/bar.txt");
+        new URLApplicationResource("org/apache/tiles/request/test/locale/resource.txt", url);
+
+        // This would cause an AssertionError if the protocol had not been cached
+        new URLApplicationResource("org/apache/tiles/request/test/locale/resource.txt", url);
     }
 
     @Test

@@ -26,8 +26,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.*;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.jar.Manifest;
+
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 /**
  * A {@link PostfixedApplicationResource} that can be accessed through a URL.
@@ -37,19 +42,26 @@ import java.util.jar.Manifest;
 
 public class URLApplicationResource extends PostfixedApplicationResource {
     private static final Logger LOG = LoggerFactory.getLogger(URLApplicationResource.class);
+    private static final Map<String, Boolean> CHECK_BUNDLE_CACHE = new HashMap<String, Boolean>();
 
-    /** the URL where the contents can be found. */
+    /**
+     * the URL where the contents can be found.
+     */
     private URL url;
-    /** if the URL matches a file, this is the file. */
+    /**
+     * if the URL matches a file, this is the file.
+     */
     private File file;
-    /** if the URL points into an OSGi bundle, this is true */
+    /**
+     * if the URL points into an OSGi bundle, this is true
+     */
     private boolean bundle;
 
     /**
      * Creates a URLApplicationResource for the specified path that can be accessed through the specified URL.
      *
      * @param localePath the path including localization.
-     * @param url the URL where the contents can be found.
+     * @param url        the URL where the contents can be found.
      */
     public URLApplicationResource(String localePath, URL url) {
         super(localePath);
@@ -64,9 +76,9 @@ public class URLApplicationResource extends PostfixedApplicationResource {
     /**
      * Creates a URLApplicationResource for the specified path that can be accessed through the specified URL.
      *
-     * @param path the path excluding localization.
+     * @param path   the path excluding localization.
      * @param locale the Locale.
-     * @param url the URL where the contents can be found.
+     * @param url    the URL where the contents can be found.
      */
     public URLApplicationResource(String path, Locale locale, URL url) {
         super(path, locale);
@@ -78,32 +90,41 @@ public class URLApplicationResource extends PostfixedApplicationResource {
         }
     }
 
-    private static boolean checkBundle(URL url) {
-        try {
-            URL manifestUrl = new URL(url.toExternalForm().replace(url.getFile(), "/META-INF/MANIFEST.MF"));
-            InputStream in = manifestUrl.openStream();
+    private synchronized static boolean checkBundle(URL url) {
+        final String protocol = url.getProtocol();
+        Boolean bundle = CHECK_BUNDLE_CACHE.get(protocol);
+
+        if (bundle == null) {
             try {
-                return new Manifest(in).getMainAttributes().getValue("Bundle-SymbolicName") != null;
-            } finally {
+                URL manifestUrl = new URL(url.toExternalForm().replace(url.getFile(), "/META-INF/MANIFEST.MF"));
+                InputStream in = manifestUrl.openStream();
                 try {
-                    in.close();
-                } catch (IOException e) {
-                    LOG.debug("Manifest could not be closed properly", e);
+                    bundle = new Manifest(in).getMainAttributes().getValue("Bundle-SymbolicName") != null ? TRUE : FALSE;
+                } finally {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        LOG.debug("Manifest could not be closed properly", e);
+                    }
                 }
+            } catch (IOException e) {
+                LOG.debug("No manifest found", e);
+                bundle = FALSE;
             }
-        } catch (IOException e) {
-            LOG.debug("No manifest found", e);
-            return false;
+
+            CHECK_BUNDLE_CACHE.put(protocol, bundle);
         }
+
+        return bundle.booleanValue();
     }
 
     private static File getFile(URL url) {
-    	try {
-			return new File(new URI(url.toExternalForm()).getSchemeSpecificPart());
-		} catch (URISyntaxException e) {
-			LOG.debug("Cannot translate URL to file name, expect a performance impact", e);
-			return null;
-		}
+        try {
+            return new File(new URI(url.toExternalForm()).getSchemeSpecificPart());
+        } catch (URISyntaxException e) {
+            LOG.debug("Cannot translate URL to file name, expect a performance impact", e);
+            return null;
+        }
     }
 
     private URLConnection openConnection() throws IOException {
@@ -119,8 +140,10 @@ public class URLApplicationResource extends PostfixedApplicationResource {
             throw e;
         }
     }
-    
-    /** {@inheritDoc} */
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InputStream getInputStream() throws IOException {
         if (file != null) {
@@ -130,7 +153,9 @@ public class URLApplicationResource extends PostfixedApplicationResource {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long getLastModified() throws IOException {
         if (file != null) {
@@ -146,17 +171,19 @@ public class URLApplicationResource extends PostfixedApplicationResource {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "Resource " + getLocalePath() + " at " + url.toString();
     }
 
-    protected URL getURL(){
+    protected URL getURL() {
         return url;
     }
 
-    protected File getFile(){
+    protected File getFile() {
         return file;
     }
 }
