@@ -20,20 +20,13 @@
  */
 
 package org.apache.tiles.request.locale;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
 import java.util.Locale;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Tests URLApplicationResource.
@@ -42,25 +35,46 @@ import org.junit.Test;
  */
 public class URLApplicationResourceTest {
 
-    private class TestApplicationResource extends URLApplicationResource {
-        public TestApplicationResource(String localePath, URL url) throws URISyntaxException {
-            super(localePath, url);
-        }
+    private static class TestUrlConnection extends URLConnection {
+        private static boolean alreadyCalled;
 
-        public TestApplicationResource(String path, Locale locale, URL url) throws MalformedURLException, URISyntaxException {
-            super(path, locale, url);
+        public TestUrlConnection(final URL url) {
+            super(url);
         }
 
         @Override
-        protected URL getURL(){
-            return super.getURL();
+        public InputStream getInputStream() throws IOException {
+            if (alreadyCalled) {
+                fail("Connect has already been called!");
+            }
+            alreadyCalled = true;
+            return new ByteArrayInputStream(new byte[0]);
         }
 
         @Override
-        protected File getFile(){
-            return super.getFile();
+        public void connect() throws IOException {
+            // noop
         }
-    };
+    }
+
+    private static class TestUrlStreamHandler extends URLStreamHandler {
+
+        @Override
+        protected URLConnection openConnection(final URL u) throws IOException {
+            return new TestUrlConnection(u);
+        }
+    }
+
+    private static class TestURLStreamHandlerFactory implements URLStreamHandlerFactory {
+
+        @Override
+        public URLStreamHandler createURLStreamHandler(final String protocol) {
+            if ("test".equals(protocol)) {
+                return new TestUrlStreamHandler();
+            }
+            return null;
+        }
+    }
 
     /**
      * Test getLocalePath(String path, Locale locale).
@@ -200,5 +214,26 @@ public class URLApplicationResourceTest {
     	InputStream is = resource.getInputStream();
     	assertNotNull(is);
     	is.close();
+    }
+
+    @Test
+    public void testUseCachedBundleCheckResult() throws IOException {
+        URL.setURLStreamHandlerFactory(new TestURLStreamHandlerFactory());
+        URL url = new URL("test://foo/bar.txt");
+        new URLApplicationResource("org/apache/tiles/request/test/locale/resource.txt", url);
+
+        // This would cause an AssertionError if the protocol had not been cached
+        new URLApplicationResource("org/apache/tiles/request/test/locale/resource.txt", url);
+    }
+
+    @Test
+    public void testProtocolNotFileAndNoManifestFound() throws IOException {
+        URL url = new URL("http://--$_foo.org/bar.txt");
+        URLApplicationResource resource = new URLApplicationResource("org/apache/tiles/request/test/locale/resource.txt", url);
+        try {
+            resource.getInputStream();
+        } catch (IOException e) {
+            assertFalse(e instanceof FileNotFoundException);
+        }
     }
 }
