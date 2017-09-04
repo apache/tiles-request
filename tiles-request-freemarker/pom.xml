@@ -24,11 +24,11 @@ under the License.
   <parent>
     <artifactId>tiles-request</artifactId>
     <groupId>org.apache.tiles</groupId>
-    <version>1.0.7</version>
+    <version>1.0.8-SNAPSHOT</version>
   </parent>
   <groupId>org.apache.tiles</groupId>
   <artifactId>tiles-request-freemarker</artifactId>
-  <version>1.0.7</version>
+  <version>1.0.8-SNAPSHOT</version>
   <name>Tiles Request - Freemarker support</name>
   <description>Freemarker implementation of the Tiles request framework</description>
   <dependencies>
