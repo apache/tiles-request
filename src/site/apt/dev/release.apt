@@ -77,13 +77,13 @@ ssh-keygen -t rsa
   * Copy your public key to the server:
 
 --------------------------------------
-scp ~/.ssh/id_rsa.pub user@people.apache.org:.ssh/authorized_keys
+scp ~/.ssh/id_rsa.pub user@minotaur.apache.org:.ssh/authorized_keys
 --------------------------------------
 
   * Try to login:
 
 ---------------------------------
-ssh user@people.apache.org
+ssh user@minotaur.apache.org
 ---------------------------------
 
   If it does not ask you a password, everything is ok.
@@ -124,12 +124,16 @@ mvn release:perform
 
   It should compile and test everything, build and upload the artifacts and the website for the project.
 
-  <<Troubleshooting>>: if upload of assemblies fails it can be done manually with
+  Upload the assemblies manually with
 
 -----------------------------------
-cd target/checkout/assembly/target/assemblies/
-ssh user@people.apache.org mkdir /www/people.apache.org/builds/tiles/request/${version}/
-scp * user@people.apache.org:/www/people.apache.org/builds/tiles/request/${version}/
+cd target/
+svn co https://dist.apache.org/repos/dist/dev/tiles tiles-dist-dev
+mkdir tiles-request-dist-releases/request/${version}
+cd tiles-request-dist-releases/request/${version}
+cp checkout/assembly/target/assemblies/* tiles-request-dist-releases/request/${version}/
+svn add tiles-request-dist-releases/request/${version}
+svn ci tiles-request-dist-releases/request/${version}
 -----------------------------------
 
 * Close the staging repository
@@ -157,7 +161,7 @@ scp * user@people.apache.org:/www/people.apache.org/builds/tiles/request/${versi
 
 * Verify the uploaded assemblies
 
-  * go to the destination directory on people.apache.org (cd /www/people.apache.org/builds/tiles/request/${version}).
+  * go to the destination directory on dist.apache.org ( https://dist.apache.org/repos/dist/dev/tiles/request/${version} ).
 
   * check the presence of the 3 distributions (bin, doc and src), and their signature files (*.asc, *.md5, *sha1).
 
@@ -190,7 +194,7 @@ Release notes:
 
 Distribution:
 
- * http://people.apache.org/builds/tiles/request/${version}/
+ * https://dist.apache.org/repos/dist/dev/tiles/request/${version}/
 
 Maven 2 staging repository:
 
@@ -216,7 +220,7 @@ Release notes:
 
 Distribution:
 
- * http://people.apache.org/builds/tiles/request/${version}/
+ * https://dist.apache.org/repos/dist/dev/tiles/request/${version}/
 
 Maven 2 staging repository:
 
@@ -258,12 +262,7 @@ three binding +1s and more +1s than -1s.
   Move assemblies into the Apache {{{http://www.apache.org/dev/release#when-to-archive}dist}} repository:
 
 -------------------------------------------
-svn co https://dist.apache.org/repos/dist/release/tiles tiles-request-dist-releases
-mkdir tiles-request-dist-releases/v${version}
-cd tiles-request-dist-releases/v${version}
-scp user@people.apache.org:/www/people.apache.org/builds/tiles/request/${version}/* .
-svn add .
-svn ci
+svn mv https://dist.apache.org/repos/dist/dev/tiles/request/${version} https://dist.apache.org/repos/dist/release/tiles/request/
 -------------------------------------------
 
 ** Update the site
