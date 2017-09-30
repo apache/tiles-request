@@ -66,27 +66,6 @@ https://svn.apache.org/repos/asf/tiles/site/KEYS
   Publish your GPG key in a PGP key server, such as
   {{{http://pgp.mit.edu/} MIT Keyserver}}.
 
-* Create and upload yout SSH key
-
-  * Generate your SSH key (in this case we will use DSA encryption):
-
----------------------------------
-ssh-keygen -t rsa
----------------------------------
-
-  * Copy your public key to the server:
-
---------------------------------------
-scp ~/.ssh/id_rsa.pub user@minotaur.apache.org:.ssh/authorized_keys
---------------------------------------
-
-  * Try to login:
-
----------------------------------
-ssh user@minotaur.apache.org
----------------------------------
-
-  If it does not ask you a password, everything is ok.
 
 * Modify <<<settings.xml>>>
 
