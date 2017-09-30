@@ -108,11 +108,10 @@ mvn release:perform
 -----------------------------------
 cd target/
 svn co https://dist.apache.org/repos/dist/dev/tiles tiles-dist-dev
-mkdir tiles-request-dist-releases/request/${version}
-cd tiles-request-dist-releases/request/${version}
-cp checkout/assembly/target/assemblies/* tiles-request-dist-releases/request/${version}/
-svn add tiles-request-dist-releases/request/${version}
-svn ci tiles-request-dist-releases/request/${version}
+mkdir tiles-dist-dev/request/${version}
+cp checkout/assembly/target/assemblies/* tiles-dist-dev/request/${version}/
+svn add tiles-dist-dev/request/${version}
+svn ci tiles-dist-dev/request/${version}
 -----------------------------------
 
 * Close the staging repository
