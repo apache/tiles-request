@@ -89,7 +89,7 @@ public class EnvironmentScopeExtractorTest {
         Configuration configuration = createMock(Configuration.class);
         Set<String> names = new HashSet<String>();
         names.add("testGetKeys");
-        
+
         Writer writer = new StringWriter();
 
         expect(template.getMacros()).andReturn(new HashMap<Object, Object>());

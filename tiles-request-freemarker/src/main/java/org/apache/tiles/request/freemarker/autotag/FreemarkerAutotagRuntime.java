@@ -34,14 +34,14 @@ import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateModel;
 
 /**
- * A Runtime for implementing a Freemarker Template Directive.   
+ * A Runtime for implementing a Freemarker Template Directive.
  */
 public class FreemarkerAutotagRuntime implements AutotagRuntime<Request>, TemplateDirectiveModel {
 
     private Environment env;
     private TemplateDirectiveBody body;
     private Map<String, TemplateModel> params;
-    
+
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
     @Override
@@ -62,7 +62,7 @@ public class FreemarkerAutotagRuntime implements AutotagRuntime<Request>, Templa
     public ModelBody createModelBody() {
         return new FreemarkerModelBody(env.getOut(), body);
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public <T> T getParameter(String name, Class<T> type, T defaultValue) {

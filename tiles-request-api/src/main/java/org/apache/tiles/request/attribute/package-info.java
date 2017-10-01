@@ -19,7 +19,7 @@
  * under the License.
  */
 /**
- * Methods to get, set and remove attributes from different sources (like HTTP requests 
+ * Methods to get, set and remove attributes from different sources (like HTTP requests
  * or sessions).
  * By implementing {@link org.apache.tiles.request.attribute.AttributeExtractor},
  * you can use a Map from {@link org.apache.tiles.request.collection} to manipulate the

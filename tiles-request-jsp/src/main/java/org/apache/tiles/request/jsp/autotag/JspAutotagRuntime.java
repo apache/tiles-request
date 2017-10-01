@@ -35,7 +35,7 @@ public class JspAutotagRuntime extends SimpleTagSupport implements AutotagRuntim
     /** {@inheritDoc} */
     @Override
     public void doTag() {
-        // do nothing like the parent implementation, 
+        // do nothing like the parent implementation,
         // but don't throw exceptions either
     }
 

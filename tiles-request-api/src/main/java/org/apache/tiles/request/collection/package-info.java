@@ -19,9 +19,9 @@
  * under the License.
  */
 /**
- * Special collections and maps for attributes (like HTTP request 
+ * Special collections and maps for attributes (like HTTP request
  * or session attributes).
- * These can be used to access another object's attributes through 
+ * These can be used to access another object's attributes through
  * a Map interface.
  * <ul>
  * <li> {@link org.apache.tiles.request.collection.ScopeMap} provides

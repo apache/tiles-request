@@ -192,21 +192,21 @@ public class URLApplicationResourceTest {
         assertEquals("file:/", resource.getURL().toString());
         assertEquals(File.separator, resource.getFile().toString());
     }
-    
+
     @Test
     public void testGetLastModified() throws IOException {
     	URL url = getClass().getClassLoader().getResource("org/apache/tiles/request/test/locale/resource.txt");
     	URLApplicationResource resource = new URLApplicationResource("org/apache/tiles/request/test/locale/resource.txt", url);
     	assertTrue(resource.getLastModified() > 0);
     }
-    
+
     @Test
     public void testGetLastModifiedWithSpace() throws IOException {
     	URL url = getClass().getClassLoader().getResource("org/apache/tiles/request/test/locale/resource with space.txt");
     	URLApplicationResource resource = new URLApplicationResource("org/apache/tiles/request/test/locale/resource with space.txt", url);
     	assertTrue(resource.getLastModified() > 0);
     }
-    
+
     @Test
     public void testGetInputStream() throws IOException {
     	URL url = getClass().getClassLoader().getResource("org/apache/tiles/request/test/locale/resource.txt");
@@ -215,7 +215,7 @@ public class URLApplicationResourceTest {
     	assertNotNull(is);
     	is.close();
     }
-    
+
     @Test
     public void testGetInputStreamWithSpace() throws IOException {
     	URL url = getClass().getClassLoader().getResource("org/apache/tiles/request/test/locale/resource with space.txt");
