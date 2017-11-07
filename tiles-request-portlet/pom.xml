@@ -39,6 +39,8 @@
 
   <properties>
       <tiles.osgi.symbolicName>org.apache.tiles.portlet</tiles.osgi.symbolicName>
+      <!-- decrease this whenever possible -->
+      <checkstyle.maxAllowedViolations>15</checkstyle.maxAllowedViolations>
   </properties>
 
   <build>

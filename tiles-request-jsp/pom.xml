@@ -31,6 +31,10 @@ under the License.
 	<version>1.1-SNAPSHOT</version>
 	<name>Tiles Request - JSP support</name>
 	<description>JSP implementation of the Tiles Request framework.</description>
+    <properties>
+        <!-- decrease this whenever possible -->
+        <checkstyle.maxAllowedViolations>16</checkstyle.maxAllowedViolations>
+    </properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.tiles</groupId>

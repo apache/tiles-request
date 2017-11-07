@@ -32,6 +32,11 @@ under the License.
     <name>Tiles request - API</name>
     <description>API for the Tiles Request framework.</description>
 
+    <properties>
+        <!-- decrease this whenever possible -->
+        <checkstyle.maxAllowedViolations>97</checkstyle.maxAllowedViolations>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -75,7 +80,7 @@ under the License.
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.framework</artifactId>
-            <version>5.6.4</version>
+            <version>5.6.8</version>
             <scope>test</scope>
         </dependency>
         <dependency>

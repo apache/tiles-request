@@ -31,6 +31,10 @@ under the License.
   <version>1.1-SNAPSHOT</version>
   <name>Tiles Request - Freemarker support</name>
   <description>Freemarker implementation of the Tiles request framework</description>
+  <properties>
+      <!-- decrease this whenever possible -->
+      <checkstyle.maxAllowedViolations>10</checkstyle.maxAllowedViolations>
+  </properties>
   <dependencies>
   	<dependency>
   		<groupId>org.apache.tiles</groupId>

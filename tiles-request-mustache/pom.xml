@@ -30,6 +30,10 @@ under the License.
   <artifactId>tiles-request-mustache</artifactId>
   <name>Tiles request - Mustache support</name>
   <description>Tiles request implementation for Mustache templates.</description>
+  <properties>
+      <!-- decrease this whenever possible -->
+      <checkstyle.maxAllowedViolations>21</checkstyle.maxAllowedViolations>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.apache.tiles</groupId>

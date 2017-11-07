@@ -135,6 +135,7 @@ under the License.
     </build>
 
     <properties>
+        <maven.javadoc.failOnError>false</maven.javadoc.failOnError> <!-- remove with master-8 -->
         <tiles.osgi.symbolicName>org.apache.${project.artifactId}</tiles.osgi.symbolicName>
         <tiles.osgi.export>org.apache.tiles.*;version=${project.version}</tiles.osgi.export>
         <tiles.osgi.import>*</tiles.osgi.import>
