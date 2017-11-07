@@ -109,7 +109,7 @@ mvn release:perform
 cd target/
 svn co https://dist.apache.org/repos/dist/dev/tiles tiles-dist-dev
 mkdir tiles-dist-dev/request/${version}
-cp checkout/assembly/target/assemblies/* tiles-dist-dev/request/${version}/
+cp checkout/assembly/target/assembly/* tiles-dist-dev/request/${version}/
 svn add tiles-dist-dev/request/${version}
 svn ci tiles-dist-dev/request/${version}
 -----------------------------------

@@ -88,6 +88,28 @@
             </configuration>
           </plugin>
           <plugin>
+            <groupId>net.nicoulaj.maven.plugins</groupId>
+            <artifactId>checksum-maven-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>artifacts</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+                <attachChecksums>true</attachChecksums>
+            </configuration>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-gpg-plugin</artifactId>
+              <configuration>
+                  <ascDirectory>${project.build.directory}/..</ascDirectory>
+              </configuration>
+          </plugin>
+          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
             <version>1.3</version>
@@ -124,7 +146,6 @@
     <dependency>
       <groupId>org.apache.tiles</groupId>
       <artifactId>tiles-request-api</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
@@ -148,7 +169,6 @@
     <dependency>
       <groupId>org.apache.tiles</groupId>
       <artifactId>tiles-request-portlet</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
@@ -160,7 +180,6 @@
     <dependency>
       <groupId>org.apache.tiles</groupId>
       <artifactId>tiles-request-servlet</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
